@@ -12,6 +12,11 @@ class DancingLinks:
         head = DancingNode()
         col_heads = [DancingNode(col=j) for j in range(col)]
         node_mat = [[DancingNode(row=i, col=j) if mat[i][j] == 1 else None for j in range(col)] for i in range(row)]
+        counts = [0 for _ in range(col)]
+        for i in range(row):
+            for j in range(col):
+                if mat[i][j] == 1:
+                    counts[j] += 1
 
         def link_left_right(left: DancingNode, right: DancingNode) -> None:
             left.right = right
@@ -55,11 +60,26 @@ class DancingLinks:
 
         ans = []
 
+        def remove(p: DancingNode) -> None:
+            p.remove()
+            counts[p.col] -= 1
+
+        def recover(p: DancingNode) -> None:
+            p.recover()
+            counts[p.col] += 1
+
         def dfs_solve() -> bool:
             if head.right is head:
                 return True
 
-            first_col_head = head.right
+            p = head.right
+            first_col_head = p
+            while p is not head:
+                if counts[p.col] < counts[first_col_head.col]:
+                    first_col_head = p
+                p = p.right
+            if counts[first_col_head.col] < 1:
+                return False
 
             col_nodes = []
             p = first_col_head.down
@@ -79,12 +99,12 @@ class DancingLinks:
                     q = q.right
 
             # Remove nodes
-            first_col_head.remove()
+            remove(first_col_head)
             for p in col_nodes:
-                p.remove()
+                remove(p)
             for nodes in same_row_nodes:
                 for p in nodes:
-                    p.remove()
+                    remove(p)
 
             for i in range(len(col_nodes)):
                 # Remove some nodes if we chose one line
@@ -101,9 +121,9 @@ class DancingLinks:
                             s = s.right
                         r = r.down
                     for j in range(k, len(other_nodes)):
-                        other_nodes[j].remove()
+                        remove(other_nodes[j])
                 for p in same_row_nodes[i]:
-                    col_heads[p.col].remove()
+                    remove(col_heads[p.col])
 
                 # Run Depth-First Search
                 ans.append(col_nodes[i].row)
@@ -113,17 +133,17 @@ class DancingLinks:
 
                 # Recover these nodes
                 for j in range(len(same_row_nodes[i]) - 1, -1, -1):
-                    col_heads[same_row_nodes[i][j].col].recover()
+                    recover(col_heads[same_row_nodes[i][j].col])
                 for j in range(len(other_nodes) - 1, -1, -1):
-                    other_nodes[j].recover()
+                    recover(other_nodes[j])
 
             # Recover nodes
             for i in range(len(same_row_nodes) - 1, -1, -1):
                 for j in range(len(same_row_nodes[i]) - 1, -1, -1):
-                    same_row_nodes[i][j].recover()
+                    recover(same_row_nodes[i][j])
             for i in range(len(col_nodes) - 1, -1, -1):
-                col_nodes[i].recover()
-            first_col_head.recover()
+                recover(col_nodes[i])
+            recover(first_col_head)
 
             # Cannot solve current problem
             return False
