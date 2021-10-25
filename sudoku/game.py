@@ -11,7 +11,23 @@ class Game:
         return copy.deepcopy(self.__board)
 
     def __str__(self):
-        return '\n'.join(' '.join(str(num) for num in line) for line in self.__board)
+        ans = '┏━━━━━┯━━━━━┯━━━━━┳━━━━━┯━━━━━┯━━━━━┳━━━━━┯━━━━━┯━━━━━┓\n'
+        for i in range(9):
+            ans += '┃'
+            for j in range(9):
+                c = ' ' if self.__board[i][j] == 0 else str(self.__board[i][j])
+                if (j + 1) % 3 == 0:
+                    ans += '  ' + c + '  ┃'
+                else:
+                    ans += '  ' + c + '  │'
+            ans += '\n'
+            if i == 8:
+                ans += '┗━━━━━┷━━━━━┷━━━━━┻━━━━━┷━━━━━┷━━━━━┻━━━━━┷━━━━━┷━━━━━┛'
+            elif (i + 1) % 3 == 0:
+                ans += '┣━━━━━┿━━━━━┿━━━━━╋━━━━━┿━━━━━┿━━━━━╋━━━━━┿━━━━━┿━━━━━┫\n'
+            else:
+                ans += '┠─────┼─────┼─────╂─────┼─────┼─────╂─────┼─────┼─────┨\n'
+        return ans
 
     @staticmethod
     def __check_valid(board: List[List[int]]) -> None:
