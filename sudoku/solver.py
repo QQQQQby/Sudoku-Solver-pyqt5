@@ -1,4 +1,7 @@
+from typing import List
+
 from sudoku import Game
+from utils import DancingLinks
 
 
 class BaseSolver:
@@ -69,3 +72,33 @@ class DancingLinksSolver(BaseSolver):
     def __init__(self, game: Game):
         super().__init__(game)
 
+        def calc_line(i: int, j: int, num: int) -> List[int]:
+            ans = [0 for _ in range(324)]
+            for idx in [i * 9 + j, i * 9 + num - 1 + 81, j * 9 + num - 1 + 162,
+                        ((i // 3) * 3 + (j // 3)) * 9 + num - 1 + 243]:
+                ans[idx] = 1
+            return ans
+
+        mat = []
+        pos_nums = []
+        board = game.get_board()
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == 0:
+                    for k in range(1, 10):
+                        mat.append(calc_line(i, j, k))
+                        pos_nums.append((i, j, k))
+                else:
+                    mat.append(calc_line(i, j, board[i][j]))
+                    pos_nums.append((i, j, board[i][j]))
+
+        lines = DancingLinks(mat).get_lines()
+        assert len(lines) == 81
+
+        board = [[0 for _ in range(9)] for _ in range(9)]
+        for i in lines:
+            board[pos_nums[i][0]][pos_nums[i][1]] = pos_nums[i][2]
+        self.__solved_board = board
+
+    def get_solved_game(self) -> Game:
+        return Game(self.__solved_board)
