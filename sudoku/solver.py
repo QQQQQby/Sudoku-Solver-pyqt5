@@ -1,7 +1,7 @@
 from typing import List
 
 from sudoku import Game
-from utils import DancingLinks
+from utils import DancingLinksX
 
 
 class BaseSolver:
@@ -68,7 +68,7 @@ class DfsSolver(BaseSolver):
         return Game(self.__solved_board)
 
 
-class DancingLinksSolver(BaseSolver):
+class DancingLinksXSolver(BaseSolver):
     def __init__(self, game: Game):
         super().__init__(game)
 
@@ -92,7 +92,7 @@ class DancingLinksSolver(BaseSolver):
                     mat.append(calc_line(i, j, board[i][j]))
                     pos_nums.append((i, j, board[i][j]))
 
-        lines = DancingLinks(mat).get_lines()
+        lines = DancingLinksX(mat).get_lines()
         assert len(lines) == 81
 
         board = [[0 for _ in range(9)] for _ in range(9)]

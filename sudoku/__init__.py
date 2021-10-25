@@ -1,2 +1,2 @@
 from .game import Game
-from .solver import BaseSolver, DfsSolver, DancingLinksSolver
+from .solver import BaseSolver, DfsSolver, DancingLinksXSolver

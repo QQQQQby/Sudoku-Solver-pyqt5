@@ -1,1 +1,1 @@
-from .dancing_links import DancingLinks
+from .dlx import DancingLinksX

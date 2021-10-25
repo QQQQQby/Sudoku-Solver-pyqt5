@@ -2,7 +2,7 @@ import copy
 from typing import List
 
 
-class DancingLinks:
+class DancingLinksX:
     def __init__(self, mat: List[List[int]]):
         self.__check_valid(mat)
 
@@ -216,7 +216,7 @@ class DancingNode:
 
 
 def test1():
-    assert sorted(DancingLinks(
+    assert sorted(DancingLinksX(
         [[0, 0, 1, 0, 1, 1, 0],
          [1, 0, 0, 1, 0, 0, 1],
          [0, 1, 1, 0, 0, 1, 0],
@@ -227,13 +227,13 @@ def test1():
 
 
 def test2():
-    assert sorted(DancingLinks(
+    assert sorted(DancingLinksX(
         [[1, 1, 1, 1, 1]]
     ).get_lines()) == [0]
 
 
 def test3():
-    assert sorted(DancingLinks(
+    assert sorted(DancingLinksX(
         [[1, 0, 0, 0, 0],
          [1, 0, 0, 0, 0]]
     ).get_lines()) == []

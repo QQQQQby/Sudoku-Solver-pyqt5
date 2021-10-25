@@ -1,11 +1,11 @@
 from typing import List
 
-from sudoku import Game, DfsSolver, DancingLinksSolver
+from sudoku import Game, DfsSolver, DancingLinksXSolver
 
 
 def run_test(board: List[List[int]]):
     game = Game(board)
-    solver = DancingLinksSolver(game)
+    solver = DancingLinksXSolver(game)
     print()
     print(game)
     print()
