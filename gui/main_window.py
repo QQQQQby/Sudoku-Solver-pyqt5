@@ -9,6 +9,7 @@
 
 
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtGui import QFont
 
 from .sudoku_frame import SudokuFrame
 
@@ -19,12 +20,13 @@ class Ui_MainWindow(object):
         MainWindow.resize(800, 880)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
-        self.sudoku_frame = SudokuFrame(None, None, parent=self.centralwidget)
+        self.sudoku_frame = SudokuFrame(self.centralwidget)
         self.sudoku_frame.setGeometry(QtCore.QRect(100, 100, 600, 600))
         self.sudoku_frame.setAutoFillBackground(False)
         self.sudoku_frame.setObjectName("sudokuFrame")
         self.sudoku_frame.setMouseTracking(True)
         self.solveButton = QtWidgets.QPushButton(self.centralwidget)
+        self.solveButton.setFont(QFont('Sans-serif', 12))
         self.solveButton.setGeometry(QtCore.QRect(340, 730, 120, 40))
         self.solveButton.setObjectName("solveButton")
         self.solveButton.clicked.connect(self._solve)
@@ -47,3 +49,4 @@ class Ui_MainWindow(object):
 
     def _solve(self):
         print('solve')
+        self.sudoku_frame.solve()

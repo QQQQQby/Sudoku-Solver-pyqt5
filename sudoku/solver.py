@@ -93,7 +93,8 @@ class DancingLinksXSolver(BaseSolver):
                     pos_nums.append((i, j, board[i][j]))
 
         lines = DancingLinksX(mat).get_lines()
-        assert len(lines) == 81
+        if len(lines) != 81:
+            raise ValueError
 
         board = [[0 for _ in range(9)] for _ in range(9)]
         for i in lines:
